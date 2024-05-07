@@ -130,10 +130,17 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::processBlock (juce::AudioBuffe
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
+    if(!getPlayHead()->getPosition()->getIsPlaying()) return;
 
+    for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+    {
+        const auto gain = smoothedGain.getNextValue();
+
+        for (int channel = 0; channel < totalNumInputChannels; ++channel)
+        {
+            auto* channelData = buffer.getWritePointer(channel);
+            channelData[sample] *= gain;
+        }
     }
 }
 
