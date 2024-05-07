@@ -50,6 +50,7 @@ public:
 
 private:
     double secondsFadein{5};
+    juce::SmoothedValue<double, juce::ValueSmoothingTypes::Linear> smoothedGain;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginFadeInVolumeEffectAudioProcessor)

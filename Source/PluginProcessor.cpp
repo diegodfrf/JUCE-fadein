@@ -85,6 +85,8 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::changeProgramName (int index, 
 //==============================================================================
 void AudioPluginFadeInVolumeEffectAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    smoothedGain.reset(sampleRate, secondsFadein);
+    smoothedGain.setTargetValue(1.0);
 }
 
 void AudioPluginFadeInVolumeEffectAudioProcessor::releaseResources()
@@ -164,6 +166,9 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::setStateInformation (const voi
 void AudioPluginFadeInVolumeEffectAudioProcessor::updateFadein (double seconds)
 {
     secondsFadein = seconds;
+    smoothedGain.reset(getSampleRate(), secondsFadein);
+    smoothedGain.setCurrentAndTargetValue(0.0);
+    smoothedGain.setTargetValue(1.0);
 }
 
 //==============================================================================
