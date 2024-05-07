@@ -29,7 +29,7 @@ void AudioPluginFadeInVolumeEffectAudioProcessorEditor::paint (juce::Graphics& g
 
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    g.drawFittedText("Fade-in Effect", 0, 0, getWidth(), 30, juce::Justification::centred, 1);
 }
 
 void AudioPluginFadeInVolumeEffectAudioProcessorEditor::resized()
