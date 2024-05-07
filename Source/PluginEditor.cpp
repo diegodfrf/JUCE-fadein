@@ -39,5 +39,5 @@ void AudioPluginFadeInVolumeEffectAudioProcessorEditor::resized()
 
 void AudioPluginFadeInVolumeEffectAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
 {
-
+    audioProcessor.updateFadein(durationSlider.getValue());
 }
