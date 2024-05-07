@@ -6,7 +6,7 @@
 //==============================================================================
 /**
 */
-class AudioPluginFadeInVolumeEffectAudioProcessorEditor  : public juce::AudioProcessorEditor
+class AudioPluginFadeInVolumeEffectAudioProcessorEditor  : public juce::AudioProcessorEditor, private juce::Slider::Listener
 {
 public:
     AudioPluginFadeInVolumeEffectAudioProcessorEditor (AudioPluginFadeInVolumeEffectAudioProcessor&);
@@ -17,7 +17,10 @@ public:
     void resized() override;
 
 private:
+    void sliderValueChanged(juce::Slider* slider) override;
+
     AudioPluginFadeInVolumeEffectAudioProcessor& audioProcessor;
+    juce::Slider durationSlider;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginFadeInVolumeEffectAudioProcessorEditor)
 };

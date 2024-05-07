@@ -5,7 +5,17 @@
 AudioPluginFadeInVolumeEffectAudioProcessorEditor::AudioPluginFadeInVolumeEffectAudioProcessorEditor (AudioPluginFadeInVolumeEffectAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    setSize (400, 300);
+    setSize(200, 100);
+
+    durationSlider.setSliderStyle(juce::Slider::LinearHorizontal);
+    durationSlider.setRange(0.0, 60, 0.1);
+    durationSlider.setValue(5.0);
+    durationSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 100, 30);
+    durationSlider.setTextValueSuffix(" Seconds");
+
+    addAndMakeVisible(&durationSlider);
+
+    durationSlider.addListener(this);
 }
 
 AudioPluginFadeInVolumeEffectAudioProcessorEditor::~AudioPluginFadeInVolumeEffectAudioProcessorEditor()
@@ -24,4 +34,10 @@ void AudioPluginFadeInVolumeEffectAudioProcessorEditor::paint (juce::Graphics& g
 
 void AudioPluginFadeInVolumeEffectAudioProcessorEditor::resized()
 {
+    durationSlider.setBounds(30, 40, getWidth() - 60, 40);
+}
+
+void AudioPluginFadeInVolumeEffectAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
+{
+
 }
