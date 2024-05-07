@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio Version 17
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AudioPluginFadeInVolumeEffect - Standalone Plugin", "AudioPluginFadeInVolumeEffect_StandalonePlugin.vcxproj", "{53B2DA5E-0E84-5D06-6D13-131D85D99DB1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{47D3C4F0-1D54-9ADE-CFFF-8681B6E6CD9E} = {47D3C4F0-1D54-9ADE-CFFF-8681B6E6CD9E}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AudioPluginFadeInVolumeEffect - VST3", "AudioPluginFadeInVolumeEffect_VST3.vcxproj", "{75C60972-5068-25A0-B67A-4E670B598986}"
+	ProjectSection(ProjectDependencies) = postProject
+		{47D3C4F0-1D54-9ADE-CFFF-8681B6E6CD9E} = {47D3C4F0-1D54-9ADE-CFFF-8681B6E6CD9E}
+		{8FDD1A43-35AB-0339-017C-0566C54D1A19} = {8FDD1A43-35AB-0339-017C-0566C54D1A19}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AudioPluginFadeInVolumeEffect - Shared Code", "AudioPluginFadeInVolumeEffect_SharedCode.vcxproj", "{47D3C4F0-1D54-9ADE-CFFF-8681B6E6CD9E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AudioPluginFadeInVolumeEffect - VST3 Manifest Helper", "AudioPluginFadeInVolumeEffect_VST3ManifestHelper.vcxproj", "{8FDD1A43-35AB-0339-017C-0566C54D1A19}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75C60972-5068-25A0-B67A-4E670B598986}.Debug|x64.ActiveCfg = Debug|x64
+		{75C60972-5068-25A0-B67A-4E670B598986}.Debug|x64.Build.0 = Debug|x64
+		{75C60972-5068-25A0-B67A-4E670B598986}.Release|x64.ActiveCfg = Release|x64
+		{75C60972-5068-25A0-B67A-4E670B598986}.Release|x64.Build.0 = Release|x64
+		{53B2DA5E-0E84-5D06-6D13-131D85D99DB1}.Debug|x64.ActiveCfg = Debug|x64
+		{53B2DA5E-0E84-5D06-6D13-131D85D99DB1}.Debug|x64.Build.0 = Debug|x64
+		{53B2DA5E-0E84-5D06-6D13-131D85D99DB1}.Release|x64.ActiveCfg = Release|x64
+		{53B2DA5E-0E84-5D06-6D13-131D85D99DB1}.Release|x64.Build.0 = Release|x64
+		{47D3C4F0-1D54-9ADE-CFFF-8681B6E6CD9E}.Debug|x64.ActiveCfg = Debug|x64
+		{47D3C4F0-1D54-9ADE-CFFF-8681B6E6CD9E}.Debug|x64.Build.0 = Debug|x64
+		{47D3C4F0-1D54-9ADE-CFFF-8681B6E6CD9E}.Release|x64.ActiveCfg = Release|x64
+		{47D3C4F0-1D54-9ADE-CFFF-8681B6E6CD9E}.Release|x64.Build.0 = Release|x64
+		{8FDD1A43-35AB-0339-017C-0566C54D1A19}.Debug|x64.ActiveCfg = Debug|x64
+		{8FDD1A43-35AB-0339-017C-0566C54D1A19}.Debug|x64.Build.0 = Debug|x64
+		{8FDD1A43-35AB-0339-017C-0566C54D1A19}.Release|x64.ActiveCfg = Release|x64
+		{8FDD1A43-35AB-0339-017C-0566C54D1A19}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
