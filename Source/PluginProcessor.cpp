@@ -126,25 +126,28 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::processBlock(juce::AudioBuffer
     auto totalNumInputChannels = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
+    // Clear the buffer before processing
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
 
+    // Get the current playback position and elapsed samples
     auto playHeadPosition = getPlayHead()->getPosition();
-
     if (!playHeadPosition->getIsPlaying()) return;
-
     auto samplesElapsed = playHeadPosition->getTimeInSamples();
     if (!samplesElapsed.hasValue()) return;
 
+    // Check if the expected next sample position has changed
     if (expectedNextSamplePosition != (*samplesElapsed))
     {
         resetSmoothedValue(*samplesElapsed);
     }
 
+    // Process each sample in the buffer
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
     {
         const double gain = smoothedGain.getNextValue();
 
+        // Apply the gain to each input channel
         for (int channel = 0; channel < totalNumInputChannels; ++channel)
         {
             auto* channelData = buffer.getWritePointer(channel);
@@ -152,6 +155,7 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::processBlock(juce::AudioBuffer
         }
     }
 
+    // Update the expected next sample position
     expectedNextSamplePosition = *samplesElapsed + buffer.getNumSamples();
 }
 
@@ -181,6 +185,7 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::setStateInformation(const void
 }
 
 //==============================================================================
+// Update the time of Fade-in and reset the smooth value.
 void AudioPluginFadeInVolumeEffectAudioProcessor::updateFadein(double seconds)
 {
     secondsFadein = seconds;
@@ -189,9 +194,12 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::updateFadein(double seconds)
 
 void AudioPluginFadeInVolumeEffectAudioProcessor::resetSmoothedValue(int64_t samplesElapsed)
 {
+    // Reset the smoothed gain object using the current sample rate and fade-in duration.
     smoothedGain.reset(getSampleRate(), secondsFadein);
     smoothedGain.setCurrentAndTargetValue(0.0);
     smoothedGain.setTargetValue(1.0);
+
+    // Skip over any existing samples that have already been processed.
     smoothedGain.skip(samplesElapsed);
 }
 
