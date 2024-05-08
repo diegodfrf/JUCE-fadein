@@ -132,9 +132,19 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::processBlock (juce::AudioBuffe
 
     if(!getPlayHead()->getPosition()->getIsPlaying()) return;
 
+    auto samplesElapsed = getPlayHead()->getPosition()->getTimeInSamples();
+    if(samplesElapsed.hasValue())
+    {
+        smoothedGain.reset(getSampleRate(), secondsFadein);
+        smoothedGain.setCurrentAndTargetValue(0.0);
+        smoothedGain.setTargetValue(1.0);
+        smoothedGain.skip(*samplesElapsed);
+    }
+
+    double gain = 0.0;
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
     {
-        const auto gain = smoothedGain.getNextValue();
+        gain = smoothedGain.getNextValue();
 
         for (int channel = 0; channel < totalNumInputChannels; ++channel)
         {
@@ -173,9 +183,6 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::setStateInformation (const voi
 void AudioPluginFadeInVolumeEffectAudioProcessor::updateFadein (double seconds)
 {
     secondsFadein = seconds;
-    smoothedGain.reset(getSampleRate(), secondsFadein);
-    smoothedGain.setCurrentAndTargetValue(0.0);
-    smoothedGain.setTargetValue(1.0);
 }
 
 //==============================================================================
