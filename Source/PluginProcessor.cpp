@@ -4,14 +4,14 @@
 //==============================================================================
 AudioPluginFadeInVolumeEffectAudioProcessor::AudioPluginFadeInVolumeEffectAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
+    : AudioProcessor(BusesProperties()
+#if ! JucePlugin_IsMidiEffect
+#if ! JucePlugin_IsSynth
+        .withInput("Input", juce::AudioChannelSet::stereo(), true)
+#endif
+        .withOutput("Output", juce::AudioChannelSet::stereo(), true)
+#endif
+    )
 #endif
 {
 }
@@ -28,29 +28,29 @@ const juce::String AudioPluginFadeInVolumeEffectAudioProcessor::getName() const
 
 bool AudioPluginFadeInVolumeEffectAudioProcessor::acceptsMidi() const
 {
-   #if JucePlugin_WantsMidiInput
+#if JucePlugin_WantsMidiInput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool AudioPluginFadeInVolumeEffectAudioProcessor::producesMidi() const
 {
-   #if JucePlugin_ProducesMidiOutput
+#if JucePlugin_ProducesMidiOutput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool AudioPluginFadeInVolumeEffectAudioProcessor::isMidiEffect() const
 {
-   #if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 double AudioPluginFadeInVolumeEffectAudioProcessor::getTailLengthSeconds() const
@@ -60,8 +60,8 @@ double AudioPluginFadeInVolumeEffectAudioProcessor::getTailLengthSeconds() const
 
 int AudioPluginFadeInVolumeEffectAudioProcessor::getNumPrograms()
 {
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
+    return 1; // NB: some hosts don't cope very well if you tell them there are 0 programs,
+    // so this should be at least 1, even if you're not really implementing programs.
 }
 
 int AudioPluginFadeInVolumeEffectAudioProcessor::getCurrentProgram()
@@ -69,21 +69,21 @@ int AudioPluginFadeInVolumeEffectAudioProcessor::getCurrentProgram()
     return 0;
 }
 
-void AudioPluginFadeInVolumeEffectAudioProcessor::setCurrentProgram (int index)
+void AudioPluginFadeInVolumeEffectAudioProcessor::setCurrentProgram(int index)
 {
 }
 
-const juce::String AudioPluginFadeInVolumeEffectAudioProcessor::getProgramName (int index)
+const juce::String AudioPluginFadeInVolumeEffectAudioProcessor::getProgramName(int index)
 {
     return {};
 }
 
-void AudioPluginFadeInVolumeEffectAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void AudioPluginFadeInVolumeEffectAudioProcessor::changeProgramName(int index, const juce::String& newName)
 {
 }
 
 //==============================================================================
-void AudioPluginFadeInVolumeEffectAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void AudioPluginFadeInVolumeEffectAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
 }
 
@@ -94,48 +94,49 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::releaseResources()
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool AudioPluginFadeInVolumeEffectAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool AudioPluginFadeInVolumeEffectAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
     return true;
-  #else
+#else
     // This is the place where you check if the layout is supported.
     // In this template code we only support mono or stereo.
     // Some plugin hosts, such as certain GarageBand versions, will only
     // load plugins that support stereo bus layouts.
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+        && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
 
     // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
+#if ! JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
-   #endif
+#endif
 
     return true;
-  #endif
+#endif
 }
 #endif
 
-void AudioPluginFadeInVolumeEffectAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void AudioPluginFadeInVolumeEffectAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
+                                                               juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
+    auto totalNumInputChannels = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+        buffer.clear(i, 0, buffer.getNumSamples());
 
     auto playHeadPosition = getPlayHead()->getPosition();
 
-    if(!playHeadPosition->getIsPlaying()) return;
+    if (!playHeadPosition->getIsPlaying()) return;
 
     auto samplesElapsed = playHeadPosition->getTimeInSamples();
-    if(!samplesElapsed.hasValue()) return;
+    if (!samplesElapsed.hasValue()) return;
 
-    if(expectedNextSamplePosition != (*samplesElapsed))
+    if (expectedNextSamplePosition != (*samplesElapsed))
     {
         resetSmoothedValue(*samplesElapsed);
     }
@@ -163,25 +164,25 @@ bool AudioPluginFadeInVolumeEffectAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* AudioPluginFadeInVolumeEffectAudioProcessor::createEditor()
 {
-    return new AudioPluginFadeInVolumeEffectAudioProcessorEditor (*this);
+    return new AudioPluginFadeInVolumeEffectAudioProcessorEditor(*this);
 }
 
 //==============================================================================
-void AudioPluginFadeInVolumeEffectAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void AudioPluginFadeInVolumeEffectAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void AudioPluginFadeInVolumeEffectAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void AudioPluginFadeInVolumeEffectAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
 }
 
 //==============================================================================
-void AudioPluginFadeInVolumeEffectAudioProcessor::updateFadein (double seconds)
+void AudioPluginFadeInVolumeEffectAudioProcessor::updateFadein(double seconds)
 {
     secondsFadein = seconds;
     resetSmoothedValue(expectedNextSamplePosition);

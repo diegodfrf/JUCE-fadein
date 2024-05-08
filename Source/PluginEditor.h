@@ -6,14 +6,15 @@
 //==============================================================================
 /**
 */
-class AudioPluginFadeInVolumeEffectAudioProcessorEditor  : public juce::AudioProcessorEditor, private juce::Slider::Listener
+class AudioPluginFadeInVolumeEffectAudioProcessorEditor : public juce::AudioProcessorEditor,
+                                                          private juce::Slider::Listener
 {
 public:
-    AudioPluginFadeInVolumeEffectAudioProcessorEditor (AudioPluginFadeInVolumeEffectAudioProcessor&);
+    AudioPluginFadeInVolumeEffectAudioProcessorEditor(AudioPluginFadeInVolumeEffectAudioProcessor&);
     ~AudioPluginFadeInVolumeEffectAudioProcessorEditor() override;
 
     //==============================================================================
-    void paint (juce::Graphics&) override;
+    void paint(juce::Graphics&) override;
     void resized() override;
 
 private:
@@ -22,5 +23,5 @@ private:
     AudioPluginFadeInVolumeEffectAudioProcessor& audioProcessor;
     juce::Slider durationSlider;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginFadeInVolumeEffectAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginFadeInVolumeEffectAudioProcessorEditor)
 };

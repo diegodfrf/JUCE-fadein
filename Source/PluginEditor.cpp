@@ -2,8 +2,9 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-AudioPluginFadeInVolumeEffectAudioProcessorEditor::AudioPluginFadeInVolumeEffectAudioProcessorEditor (AudioPluginFadeInVolumeEffectAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+AudioPluginFadeInVolumeEffectAudioProcessorEditor::AudioPluginFadeInVolumeEffectAudioProcessorEditor(
+    AudioPluginFadeInVolumeEffectAudioProcessor& p)
+    : AudioProcessorEditor(&p), audioProcessor(p)
 {
     setSize(200, 100);
 
@@ -23,12 +24,12 @@ AudioPluginFadeInVolumeEffectAudioProcessorEditor::~AudioPluginFadeInVolumeEffec
 }
 
 //==============================================================================
-void AudioPluginFadeInVolumeEffectAudioProcessorEditor::paint (juce::Graphics& g)
+void AudioPluginFadeInVolumeEffectAudioProcessorEditor::paint(juce::Graphics& g)
 {
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
 
-    g.setColour (juce::Colours::white);
-    g.setFont (15.0f);
+    g.setColour(juce::Colours::white);
+    g.setFont(15.0f);
     g.drawFittedText("Fade-in Effect", 0, 0, getWidth(), 30, juce::Justification::centred, 1);
 }
 
