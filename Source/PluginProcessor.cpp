@@ -141,10 +141,9 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::processBlock(juce::AudioBuffer
         resetSmoothedValue(*samplesElapsed);
     }
 
-    double gain = 0.0;
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
     {
-        gain = smoothedGain.getNextValue();
+        const double gain = smoothedGain.getNextValue();
 
         for (int channel = 0; channel < totalNumInputChannels; ++channel)
         {
