@@ -47,10 +47,13 @@ public:
 
     //==============================================================================
     void updateFadein(double seconds);
+    void resetSmoothedValue(int64_t samplesElapsed);
 
 private:
     double secondsFadein{5};
     juce::SmoothedValue<double, juce::ValueSmoothingTypes::Linear> smoothedGain;
+
+    int64_t expectedNextSamplePosition{0};
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginFadeInVolumeEffectAudioProcessor)

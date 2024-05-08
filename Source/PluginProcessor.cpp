@@ -85,8 +85,6 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::changeProgramName (int index, 
 //==============================================================================
 void AudioPluginFadeInVolumeEffectAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    smoothedGain.reset(sampleRate, secondsFadein);
-    smoothedGain.setTargetValue(1.0);
 }
 
 void AudioPluginFadeInVolumeEffectAudioProcessor::releaseResources()
@@ -130,15 +128,16 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::processBlock (juce::AudioBuffe
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    if(!getPlayHead()->getPosition()->getIsPlaying()) return;
+    auto playHeadPosition = getPlayHead()->getPosition();
 
-    auto samplesElapsed = getPlayHead()->getPosition()->getTimeInSamples();
-    if(samplesElapsed.hasValue())
+    if(!playHeadPosition->getIsPlaying()) return;
+
+    auto samplesElapsed = playHeadPosition->getTimeInSamples();
+    if(!samplesElapsed.hasValue()) return;
+
+    if(expectedNextSamplePosition != (*samplesElapsed))
     {
-        smoothedGain.reset(getSampleRate(), secondsFadein);
-        smoothedGain.setCurrentAndTargetValue(0.0);
-        smoothedGain.setTargetValue(1.0);
-        smoothedGain.skip(*samplesElapsed);
+        resetSmoothedValue(*samplesElapsed);
     }
 
     double gain = 0.0;
@@ -152,6 +151,8 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::processBlock (juce::AudioBuffe
             channelData[sample] *= gain;
         }
     }
+
+    expectedNextSamplePosition = *samplesElapsed + buffer.getNumSamples();
 }
 
 //==============================================================================
@@ -183,6 +184,15 @@ void AudioPluginFadeInVolumeEffectAudioProcessor::setStateInformation (const voi
 void AudioPluginFadeInVolumeEffectAudioProcessor::updateFadein (double seconds)
 {
     secondsFadein = seconds;
+    resetSmoothedValue(expectedNextSamplePosition);
+}
+
+void AudioPluginFadeInVolumeEffectAudioProcessor::resetSmoothedValue(int64_t samplesElapsed)
+{
+    smoothedGain.reset(getSampleRate(), secondsFadein);
+    smoothedGain.setCurrentAndTargetValue(0.0);
+    smoothedGain.setTargetValue(1.0);
+    smoothedGain.skip(samplesElapsed);
 }
 
 //==============================================================================
